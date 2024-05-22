@@ -1,0 +1,40 @@
+services:
+  mysql:
+    image: mysql:latest
+    restart: always
+    container_name: mysql
+    environment:
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_DATABASE=aupair_network
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db:/var/lib/mysql
+
+  flyway:
+    image: flyway/flyway
+    container_name: flyway
+    command: -url=jdbc:mysql://mysql:3306/aupair_network?allowPublicKeyRetrieval=true&useSSL=false -user=root -password=root migrate
+    depends_on:
+      - mysql
+    volumes:
+      - ./migrations:/flyway/sql
+
+  aupair_network:
+    build: .
+    image: aupair_network
+    container_name: aupair_network
+    depends_on:
+      - flyway
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/aupair_network?allowPublicKeyRetrieval=true&useSSL=false
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_DATASOURCE_DRIVER-CLASS-NAME=com.mysql.cj.jdbc.Driver
+    ports:
+      - "8080:8080"
+
+volumes:
+  mysql:
+  migration:
