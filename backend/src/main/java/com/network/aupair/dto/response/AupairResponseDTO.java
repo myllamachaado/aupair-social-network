@@ -1,4 +1,4 @@
-package com.network.aupair.aupair.dto.response;
+package com.network.aupair.dto.response;
 
 import lombok.Getter;
 import lombok.Setter;

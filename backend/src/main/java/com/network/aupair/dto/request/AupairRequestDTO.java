@@ -1,4 +1,4 @@
-package com.network.aupair.aupair.dto.request;
+package com.network.aupair.dto.request;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

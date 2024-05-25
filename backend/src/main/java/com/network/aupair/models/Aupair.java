@@ -1,4 +1,4 @@
-package com.network.aupair.aupair.models;
+package com.network.aupair.models;
 
 import jakarta.persistence.*;
 import lombok.*;

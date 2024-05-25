@@ -1,8 +1,8 @@
-package com.network.aupair.aupair.mapper;
+package com.network.aupair.mapper;
 
-import com.network.aupair.aupair.dto.request.AupairRequestDTO;
-import com.network.aupair.aupair.dto.response.AupairResponseDTO;
-import com.network.aupair.aupair.models.Aupair;
+import com.network.aupair.dto.request.AupairRequestDTO;
+import com.network.aupair.dto.response.AupairResponseDTO;
+import com.network.aupair.models.Aupair;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

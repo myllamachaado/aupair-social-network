@@ -1,17 +1,18 @@
-package com.network.aupair.aupair;
+package com.network.aupair.controller;
 
-import com.network.aupair.aupair.dto.request.AupairRequestDTO;
-import com.network.aupair.aupair.dto.response.AupairResponseDTO;
-import com.network.aupair.aupair.mapper.AupairAssembler;
-import com.network.aupair.aupair.models.Aupair;
-import com.network.aupair.aupair.models.Country;
+import com.network.aupair.dto.request.AupairRequestDTO;
+import com.network.aupair.dto.response.AupairResponseDTO;
+import com.network.aupair.repository.AupairRepository;
+import com.network.aupair.service.AupairService;
+import com.network.aupair.mapper.AupairAssembler;
+import com.network.aupair.models.Aupair;
+import com.network.aupair.models.Country;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/aupair")
@@ -34,8 +35,7 @@ public class AupairController {
 
     @GetMapping("/{id}")
     public ResponseEntity<AupairResponseDTO> getAupair(@PathVariable String id){
-        return aupairService.getById(id).map(aupair -> ResponseEntity.ok(aupairAssembler.toResponseDTO(aupair)))
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(aupairAssembler.toResponseDTO(aupairService.getById(id)));
     }
 
     @PostMapping
@@ -48,27 +48,17 @@ public class AupairController {
 
     @PutMapping("/{id}")
     public ResponseEntity<AupairResponseDTO> editAupair(@PathVariable String id, @Valid @RequestBody AupairRequestDTO aupair){
-        if(aupairService.getById(id).isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-        else{
             Aupair aupairModel = aupairAssembler.requestToModel(aupair);
             aupairModel.setAupairId(id);
             aupairModel.setAupairCountryId(new Country(aupair.getAupairCountry()));
             aupairModel.setCountryOfOriginId(new Country(aupair.getCountryOfOrigin()));
             AupairResponseDTO response = aupairAssembler.toResponseDTO(aupairService.updateById(aupairModel, id));
             return ResponseEntity.ok(response);
-        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<AupairResponseDTO> deleteAupair(@PathVariable String id){
-        if(aupairService.getById(id).isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-        else{
             aupairService.delete(id);
             return ResponseEntity.ok().build();
-        }
     }
 }

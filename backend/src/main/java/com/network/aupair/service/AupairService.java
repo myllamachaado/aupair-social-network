@@ -1,11 +1,12 @@
-package com.network.aupair.aupair;
+package com.network.aupair.service;
 
-import com.network.aupair.aupair.models.Aupair;
+import com.network.aupair.repository.AupairRepository;
+import com.network.aupair.models.Aupair;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AupairService {
@@ -25,8 +26,8 @@ public class AupairService {
         return aupairRepository.findAll();
     }
 
-    public Optional<Aupair> getById(String id){
-        return aupairRepository.findById(id);
+    public Aupair getById(String id){
+        return aupairRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Entity not found!"));
     }
 
     public Aupair updateById(Aupair aupair, String id){
